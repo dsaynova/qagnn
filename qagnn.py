@@ -374,22 +374,20 @@ def eval_detail(args):
     model.eval()
 
     statement_dic = {}
-    for statement_path in (args.train_statements, args.dev_statements, args.test_statements):
-        statement_dic.update(load_statement_dict(statement_path))
+    statement_dic.update(load_statement_dict(args.test_statements))
 
     use_contextualized = 'lm' in old_args.ent_emb
 
     print ('inhouse?', args.inhouse)
 
-    print ('args.train_statements', args.train_statements)
-    print ('args.dev_statements', args.dev_statements)
+    #print ('args.train_statements', args.train_statements)
+    #print ('args.dev_statements', args.dev_statements)
     print ('args.test_statements', args.test_statements)
-    print ('args.train_adj', args.train_adj)
-    print ('args.dev_adj', args.dev_adj)
+    #print ('args.train_adj', args.train_adj)
+    #print ('args.dev_adj', args.dev_adj)
     print ('args.test_adj', args.test_adj)
 
-    dataset = LM_QAGNN_DataLoader(args, args.train_statements, args.train_adj,
-                                           args.dev_statements, args.dev_adj,
+    dataset = LM_QAGNN_DataLoader(args,
                                            args.test_statements, args.test_adj,
                                            batch_size=args.batch_size, eval_batch_size=args.eval_batch_size,
                                            device=(device0, device1),
@@ -399,8 +397,8 @@ def eval_detail(args):
                                            subsample=args.subsample, use_cache=args.use_cache)
 
     save_test_preds = args.save_model
-    dev_acc = evaluate_accuracy(dataset.dev(), model)
-    print('dev_acc {:7.4f}'.format(dev_acc))
+    #dev_acc = evaluate_accuracy(dataset.dev(), model)
+    #print('dev_acc {:7.4f}'.format(dev_acc))
     if not save_test_preds:
         test_acc = evaluate_accuracy(dataset.test(), model) if args.test_statements else 0.0
     else:
